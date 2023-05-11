@@ -1,5 +1,10 @@
-pool:
-  vmImage: ubuntu-latest
+jobs:
+- job:
+
+
+  pool:
+    vmImage: ubuntu-latest
+  displayName: Build
 
 steps:
 
@@ -54,3 +59,17 @@ steps:
     containerRegistry: 'Docker'
     repository: 'tomascastrogonzalez/spring-clinic'
     command: 'push'
+
+#Agregar job
+- job:
+    pool: 'default'
+    step:
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'None'
+    command: 'create'
+    arguments: 'deployment springclinic --image=tomascastrogonzalez/spring-clinic:26'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
+
+
